@@ -345,9 +345,9 @@ libsqlite3.a:	$(LIBOBJ)
 	$(AR) libsqlite3.a $(LIBOBJ)
 	$(RANLIB) libsqlite3.a
 
-sqlite3$(EXE):	$(TOP)/src/shell.c libsqlite3.a sqlite3.h
-	$(TCCX) $(READLINE_FLAGS) -o sqlite3$(EXE)                  \
-		$(TOP)/src/shell.c                                  \
+sqlite3$(EXE):	$(TOP)/shell.o libsqlite3.a sqlite3.h
+	$(LD) $(ALL_LDFLAGS) $(LDFLAGS) $(READLINE_FLAGS) -o sqlite3$(EXE)                  \
+		$(TOP)/shell.o                                  \
 		libsqlite3.a $(LIBREADLINE) $(TLIBS) $(THREADLIB)
 
 # This target creates a directory named "tsrc" and fills it with
@@ -530,7 +530,7 @@ sqlite3_analyzer$(EXE):	$(TOP)/src/tclsqlite.c sqlite3.c $(TESTSRC) \
 	  -e 's,^,",' \
 	  -e 's,$$,\\n",' \
 	  $(TOP)/tool/spaceanal.tcl >spaceanal_tcl.h
-	$(TCCX) $(TCL_FLAGS) -DTCLSH=2 $(TESTFIXTURE_FLAGS)                    \
+	$(LD) $(ALL_LDFLAGS) $(LDFLAGS) $(TCL_FLAGS) -DTCLSH=2 $(TESTFIXTURE_FLAGS)                    \
 		-DSQLITE_TEST=1 -DSQLITE_PRIVATE=""                            \
 		$(TESTSRC) $(TOP)/src/tclsqlite.c sqlite3.c                    \
 		-o sqlite3_analyzer$(EXE)                                      \
