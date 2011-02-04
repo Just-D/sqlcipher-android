@@ -68,18 +68,19 @@ EXE =
 
 #### Android NDK settings
 #
-NDK_BASE=/usr/local/android-ndk
-NDK_SYSROOT=$(NDK_BASE)/platforms/android-5/arch-arm
-NDK_TOOLCHAIN=$(NDK_BASE)/toolchains/arm-linux-androideabi-4.4.3/prebuilt/linux-x86
-CC=$(NDK_TOOLCHAIN)/bin/arm-linux-androideabi-gcc
-CPP=$(NDK_TOOLCHAIN)/bin/arm-linux-androideabi-cpp
-CXX=$(NDK_TOOLCHAIN)/bin/arm-linux-androideabi-cxx
-LD=$(NDK_TOOLCHAIN)/bin/arm-linux-androideabi-ld
-RANLIB=$(NDK_TOOLCHAIN)/bin/arm-linux-androideabi-ranlib
-STRIP=$(NDK_TOOLCHAIN)/bin/arm-linux-androideabi-strip
+NDK_BASE ?= /usr/local/android-ndk
+NDK_PLATFORM_LEVEL ?= 9
+NDK_SYSROOT = $(NDK_BASE)/platforms/android-$(NDK_PLATFORM_LEVEL)/arch-arm
+NDK_TOOLCHAIN = $(NDK_BASE)/toolchains/arm-linux-androideabi-4.4.3/prebuilt/linux-x86
+CC = $(NDK_TOOLCHAIN)/bin/arm-linux-androideabi-gcc --sysroot=$(NDK_SYSROOT)
+CPP = $(NDK_TOOLCHAIN)/bin/arm-linux-androideabi-cpp
+CXX = $(NDK_TOOLCHAIN)/bin/arm-linux-androideabi-cxx
+LD = $(NDK_TOOLCHAIN)/bin/arm-linux-androideabi-ld --sysroot=$(NDK_SYSROOT)
+RANLIB = $(NDK_TOOLCHAIN)/bin/arm-linux-androideabi-ranlib
+STRIP = $(NDK_TOOLCHAIN)/bin/arm-linux-androideabi-strip
 
-ALL_CFLAGS = -I$(NDK_SYSROOT)/usr/include
-ALL_LDFLAGS = -L$(NDK_SYSROOT)/usr/lib
+ALL_CFLAGS = 
+ALL_LDFLAGS = --entry=main
 
 #### C Compile and options for use in building executables that 
 #    will run on the target platform.  This is usually the same
